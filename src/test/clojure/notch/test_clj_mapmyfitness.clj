@@ -26,8 +26,6 @@
 
 
 
-
-
 (deftest test-basics
 ;(do
 
@@ -41,14 +39,24 @@
   (is (not (str/blank?
              (->> (get-workouts access_token)
                first
-               :workout_id (get-workouts-full access_token)
+               (:workout_id)
+               (get-workouts-full access_token)
                :route_id ))))
 
   ;;test getting a route
   (is (->> (get-workouts access_token)
         first
-        :workout_id (get-workouts-full access_token)
-        :route_id (get-route access_token)))
+        (:workout_id)
+        (get-workouts-full access_token)
+        (:route_id)
+        (get-route access_token)))
+
+  ;;test getting workout time series
+  (is (->> (get-workouts access_token)
+        first
+        (:workout_id)
+        (get-workout-time-series access_token)
+        ))
 
   )
 

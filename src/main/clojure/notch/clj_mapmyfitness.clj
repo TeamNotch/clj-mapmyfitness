@@ -100,6 +100,19 @@
     :workouts
     ))
 
+(defn get-workouts
+  "Returns a list of workouts (runs)"
+  ([access_token]
+    (get-workouts access_token 0))
+  ([access_token page_number]
+    (get-workouts access_token page_number 25))
+  ([access_token page_number page_size]
+    (->> (http-get access_token "/workouts/get_workouts" {:start_record (* page_number page_size)
+                                                          :limit page_size})
+      :result
+      :output
+      :workouts)))
+
 (defn get-workouts-full
   "Get details of single workout"
   [access_token workout_id]
@@ -116,4 +129,11 @@
     :result
     :output
 
+    ))
+
+(defn get-workout-time-series
+  "Get a workout time series"
+  [access_token workout_id]
+  (->> (http-get access_token "/workouts/get_time_series" {:workout_id workout_id})
+    :workout
     ))
